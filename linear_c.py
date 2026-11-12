@@ -13,20 +13,18 @@ def mc_perceptron(params, l_rate=None, bias=None, f_vectors=None, classes=None):
     # parse parameters if necessary
     # get features
     # get desired labels
-    n_feat = 2          # dummy for now
-    desired_labels = [0, 1, 2]
-
-    n_classes = 3       # dummy for now
+    n_feat = 2          # dummy for now, should include bias
+    desired_labels = [1, 1, -1]
 
     # print initial values
     print(f'Learning rate = {l_rate}')
     print(f'Bias, w0 = {bias}')
-    print(f'Number of Classes = {n_classes}')
+    print(f'Number of Classes = {2}')       # binary classification
     if classes != None:
-        for n in range(n_classes): print(f'\t- {n}: {classes[n]}')
+        for n in range(2): print(f'\t- {classes[n]}')
 
     # initialize weights
-    c_weights = [[bias] + [0.0]*n_feat] * n_classes
+    weights = [bias] + [0.0]*(n_feat-1)
 
     MAX_ITERATIONS = 300
 
@@ -41,70 +39,48 @@ def mc_perceptron(params, l_rate=None, bias=None, f_vectors=None, classes=None):
             print(f'x{x}', end='\t')
         for w in range(n_feat):
             print(f'w{w}', end='\t')
-        for v in range(n_classes):
-            print(f'v{v}', end='\t')
-        print('argmax\ty*')
+        print('v\ty\td')
 
         # go thru all features
         for fv in range(len(f_vectors)):
             print('=============================================')
 
-            # find argmax of the summation of fv * weight_y
+            # get true values
             feat = f_vectors[fv]
             desired_y = desired_labels[fv]
 
-            # print and calculate summation of first vector and weights
-            max_sum = 0
-            argmax = 0
+            # print and calculate summation vector and weights
+            sum = 0
             for x in range(n_feat):
                 print(f'{feat[x]:.2f}', end='\t')
             for w in range(n_feat):
-                print(f'{c_weights[w]:.2f}', end='\t')
-                max_sum += feat[w] * c_weights[0][w]
+                print(f'{weights[w]:.2f}', end='\t')
+                sum += feat[w] * weights[w]
 
+            y = 1.0 if sum > 0 else -1.0
+    
             # print feature calculations
-            print(f'{max_sum:.2f}\t{argmax:.2f}\t{desired_y:.2f}\t')
-            
-            for c in range(1, n_classes):
-                print('-----------------------------------')
+            print(f'{sum:.2f}\t{y:.2f}\t{desired_y:.2f}')
 
-                # print and calculate rest of weights and compare to max
-                sum = 0
-                for x in range(n_feat):
-                    print(f'{feat[x]:.2f}', end='\t')
-                for w in range(n_feat):
-                    print(f'{c_weights[w]:.2f}', end='\t')
-                    sum += feat[w] * c_weights[c][w]
-
-                # print feature calculations
-                print(f'{sum:.2f}\t{c:.2f}\t{desired_y:.2f}\t')
-
-                # update argmax if necessary
-                if sum > max_sum:      
-                    max_sum = sum
-                    argmax = c
-
-            # check found argmax to desired label
-            if argmax != desired_y:
+            # update weight if necessary
+            if y != desired_y:
                 success = False
 
-                # update weights
-                for i in range(n_feat):
-                    c_weights[desired_y] += feat[i] * l_rate
-                    c_weights[argmax] -= feat[i] * l_rate
+                # update each weight by its corresponding feature
+                for index in range(n_feat):
+                    weights[index] += feat[index] * l_rate * (desired_labels[fv] - y)
 
-            if success == True:
-                # successful convergence
-                print()
-                print('Correct classification (y = d)')
-                print('Final Adjusted Weight: ', end='')
-                for n in n_classes:
-                    print(f'n: {c_weights[n]}')  
+        if success == True:
+            # successful convergence
+            print()
+            print('Correct classification (y = d)')
+            print('Final Adjusted Weight: ', end='')
+            for w in weights:
+                print(f'{w:.2f}', end=' ')
+            return weights
 
-                return c_weights
-
-        # failed to converge within max iterations
-        print()
-        print('Maximum number of iterations reached.')
-        print('Possibly non-linearly separable.')
+    # failed to converge within max iterations
+    print()
+    print('Maximum number of iterations reached.')
+    print('Possibly non-linearly separable.')
             
