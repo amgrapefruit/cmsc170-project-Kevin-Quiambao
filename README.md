@@ -38,15 +38,6 @@ YoY inflation goes up only if this month's price change is bigger than the same 
 
 No feature uses data from the target month.
 
-### Splits and scaling
-Split by the target month's year: 2019–2023 train, 2024 validation, Jan 2025 to Sep 2026 test. Features are z-scaled using only the training mean and standard deviation.
-
-| split | samples | increase | decrease |
-|---|---|---|---|
-| train | 1,024 | 489 | 535 |
-| validation | 213 | 111 | 102 |
-| test | 375 | 204 | 171 |
-
 ### Usage
 ```python
 from preprocess import preprocess, FEATURES
