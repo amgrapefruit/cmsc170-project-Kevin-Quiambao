@@ -42,10 +42,10 @@ No feature uses data from the target month.
 ```python
 from preprocess import preprocess, FEATURES
 
-train, validation, test, raw_test = preprocess("data/psa_cpi.csv")
+train, test, raw_test = preprocess("data/psa_cpi.csv")
 X_train, y_train = train
 ```
-Returns 4 values: scaled train, validation and test, plus the unscaled test set for the baseline. `FEATURES` has the column names in order.
+Returns 3 values: scaled train and test, plus the unscaled test set for the baseline. `FEATURES` has the column names in order.
 
 ### Baseline
 `python baseline.py` prints the sample counts and the persistence baseline (predict the same direction as last month), which gets 58.1% on test.

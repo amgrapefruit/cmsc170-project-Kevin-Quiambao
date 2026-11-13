@@ -15,10 +15,10 @@ def persistence(X_raw):
 
 
 if __name__ == "__main__":
-    train, validation, test, raw_test = preprocess("data/psa_cpi.csv")
+    train, test, raw_test = preprocess("data/psa_cpi.csv")
 
     # sample counts and class balance per split
-    for name, (X, y) in [("train", train), ("validation", validation), ("test", test)]:
+    for name, (X, y) in [("train", train), ("test", test)]:
         print(f"{name}: {len(y)} samples, {y.count('increase')} increase, {y.count('decrease')} decrease")
 
     X_raw, y_raw = raw_test
