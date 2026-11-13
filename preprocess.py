@@ -43,11 +43,10 @@ def scale(split, averages, std_devs):
 
 
 # params: path to the psa csv
-# returns the scaled training, validation and test sets, plus the raw test set
+# returns the scaled training and test sets, plus the raw test set
 def preprocess(path):
     # each split stores feature rows and labels
     train = ([], [])
-    validation = ([], [])
     test = ([], [])
 
     with decimal.localcontext() as ctx:
@@ -143,10 +142,8 @@ def preprocess(path):
 
                 # split using the target month so we never train on the future
                 year = int(header[months[k]][:4])
-                if year <= 2023:
+                if year <= 2024:
                     X, y = train
-                elif year == 2024:
-                    X, y = validation
                 else:
                     X, y = test
 
@@ -165,11 +162,10 @@ def preprocess(path):
         averages.append(average)
         std_devs.append(std_dev or 1.0)
 
-    # use the training scaling values for all three splits
+    # use the training scaling values for both splits
     # raw test set is returned too for the baseline
     return (
         scale(train, averages, std_devs),
-        scale(validation, averages, std_devs),
         scale(test, averages, std_devs),
         test,
     )
