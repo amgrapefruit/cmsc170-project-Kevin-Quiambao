@@ -1,0 +1,147 @@
+:root {
+  color: #1f2933;
+  background: #fff;
+  font-family: system-ui, sans-serif;
+  line-height: 1.5;
+}
+
+body {
+  margin: 0;
+}
+
+main {
+  max-width: 45rem;
+  margin: 0 auto;
+  padding: 3rem 1rem;
+}
+
+h1, h2 {
+  margin: 0 0 0.75rem;
+  line-height: 1.15;
+}
+
+h1 {
+  font-size: clamp(1.9rem, 6vw, 2.75rem);
+}
+
+section, footer {
+  margin-top: 2rem;
+  padding-top: 1.5rem;
+  border-top: 1px solid #dbe1e5;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  font-variant-numeric: tabular-nums;
+}
+
+th, td {
+  padding: 0.6rem 0.5rem;
+  border-bottom: 1px solid #dbe1e5;
+  text-align: right;
+}
+
+th:first-child {
+  padding-left: 0;
+  text-align: left;
+}
+
+thead, .scale {
+  font-size: 0.875rem;
+}
+
+figure {
+  margin: 1.75rem 0;
+}
+
+figcaption {
+  margin-bottom: 0.65rem;
+  font-weight: 700;
+}
+
+.chart-row {
+  display: grid;
+  grid-template-columns: 6.5rem 1fr 3.8rem;
+  align-items: center;
+  gap: 0.5rem;
+  margin-bottom: 0.4rem;
+  font-size: 0.875rem;
+  font-variant-numeric: tabular-nums;
+}
+
+.chart-row > :last-child {
+  text-align: right;
+}
+
+meter {
+  width: 100%;
+  height: 0.9rem;
+  appearance: none;
+  background: #edf1f2;
+  border: 0;
+  border-radius: 0;
+  box-shadow: none;
+  --bar: #176c5b;
+}
+
+meter::-webkit-meter-bar {
+  background: none;
+  border: 0;
+  border-radius: 0;
+  box-shadow: none;
+}
+
+meter::-webkit-meter-optimum-value {
+  background: var(--bar);
+}
+
+meter::-moz-meter-bar {
+  background: var(--bar);
+}
+
+.baseline meter {
+  --bar: #697780;
+}
+
+.scale {
+  display: flex;
+  justify-content: space-between;
+  color: #52616b;
+}
+
+details {
+  margin-top: 0.75rem;
+}
+
+summary {
+  cursor: pointer;
+  font-weight: 600;
+}
+
+details pre {
+  padding: 0.75rem;
+  background: #f4f6f7;
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+  font-size: 0.875rem;
+}
+
+a {
+  color: #145e51;
+}
+
+@media (max-width: 28rem) {
+  main {
+    padding-top: 1.5rem;
+  }
+
+  table {
+    font-size: 0.875rem;
+  }
+
+  th, td {
+    padding-right: 0.25rem;
+    padding-left: 0.25rem;
+  }
+}

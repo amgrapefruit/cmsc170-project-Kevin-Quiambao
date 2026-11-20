@@ -1,0 +1,160 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Milestone 3 | Regional Inflation Direction</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <main>
+    <header>
+      <h1>cmsc170-project-Kevin-Quiambao</h1>
+      <p>We compare three from-scratch classifiers that predict whether a Philippine region’s year-on-year inflation rate will rise or fall the following month.</p>
+      <p>All three use the same nine features from PSA All Items CPI data for 18 regions. We trained on 1,237 samples from April 2019 to December 2024 and tested on 375 samples from January 2025 to September 2026.</p>
+    </header>
+
+    <section aria-labelledby="results">
+      <h2 id="results">Test results</h2>
+      <p>Accuracy measures the share of correct predictions. Precision and recall use a rise in inflation as the positive class.</p>
+
+      <table>
+        <thead>
+          <tr>
+            <th scope="col">Method</th>
+            <th scope="col">Accuracy</th>
+            <th scope="col">Precision</th>
+            <th scope="col">Recall</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <th scope="row">KNN (<i>k</i> = 5)</th>
+            <td>69.07%</td>
+            <td>73.16%</td>
+            <td>68.14%</td>
+          </tr>
+          <tr>
+            <th scope="row">Gaussian Naive Bayes</th>
+            <td>59.20%</td>
+            <td>63.35%</td>
+            <td>59.31%</td>
+          </tr>
+          <tr>
+            <th scope="row">Linear classifier (perceptron)</th>
+            <td>67.47%</td>
+            <td>66.02%</td>
+            <td>82.84%</td>
+          </tr>
+          <tr class="baseline">
+            <th scope="row"><a href="https://www.sciencedirect.com/topics/engineering/persistence-model">Persistence baseline</a></th>
+            <td>58.13%</td>
+            <td>61.93%</td>
+            <td>59.80%</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <figure>
+        <figcaption>Test accuracy</figcaption>
+        <div class="chart" aria-hidden="true">
+          <div class="chart-row"><span>KNN</span><meter min="0" max="100" value="69.07"></meter><span>69.07%</span></div>
+          <div class="chart-row"><span>Naive Bayes</span><meter min="0" max="100" value="59.20"></meter><span>59.20%</span></div>
+          <div class="chart-row"><span>Perceptron</span><meter min="0" max="100" value="67.47"></meter><span>67.47%</span></div>
+          <div class="chart-row baseline"><span>Baseline</span><meter min="0" max="100" value="58.13"></meter><span>58.13%</span></div>
+          <div class="chart-row"><span></span><div class="scale"><span>0%</span><span>50%</span><span>100%</span></div></div>
+        </div>
+      </figure>
+
+      <p>Among the runs shown, KNN had the highest accuracy and the perceptron had the highest recall.</p>
+      <p class="note">The perceptron uses the Milestone 2 run with a learning rate of 0.1, an initial bias of 0, and a limit of 1,000 passes. Naive Bayes uses the current branch implementation.</p>
+    </section>
+
+    <section aria-labelledby="detailed-outputs">
+      <h2 id="detailed-outputs">Detailed outputs</h2>
+      <p>TP and TN are true positives and true negatives. FP and FN are false positives and false negatives.</p>
+
+      <details>
+        <summary>KNN</summary>
+        <pre>k = 3
+TP: 142, TN: 122, FP: 49, FN: 62
+Precision: 74.35%
+Recall: 69.61%
+Accuracy: 70.40%
+
+k = 5
+TP: 139, TN: 120, FP: 51, FN: 65
+Precision: 73.16%
+Recall: 68.14%
+Accuracy: 69.07%
+
+k = 7
+TP: 140, TN: 125, FP: 46, FN: 64
+Precision: 75.27%
+Recall: 68.63%
+Accuracy: 70.67%
+
+k = 9
+TP: 144, TN: 123, FP: 48, FN: 60
+Precision: 75.00%
+Recall: 70.59%
+Accuracy: 71.20%</pre>
+      </details>
+
+      <details>
+        <summary>Gaussian Naive Bayes</summary>
+        <pre>TP: 121, TN: 101, FP: 70, FN: 83
+Precision: 63.35%
+Recall: 59.31%
+Accuracy: 59.20%</pre>
+      </details>
+
+      <details>
+        <summary>Linear classifier (perceptron)</summary>
+        <p>All five runs reached their iteration limit and used the last adjusted weights.</p>
+        <pre>Learning rate = 0.1, initial bias = 0, iteration limit = 1,000
+TP: 169, TN: 84, FP: 87, FN: 35
+Precision: 66.02%
+Recall: 82.84%
+Accuracy: 67.47%
+
+Learning rate = 1.0, initial bias = 1.0, iteration limit = 1,000
+TP: 168, TN: 84, FP: 87, FN: 36
+Precision: 65.88%
+Recall: 82.35%
+Accuracy: 67.20%
+
+Learning rate = 0.1, initial bias = 0, iteration limit = 100
+TP: 165, TN: 45, FP: 126, FN: 39
+Precision: 56.70%
+Recall: 80.88%
+Accuracy: 56.00%
+
+Learning rate = 0.1, initial bias = 0, iteration limit = 2,000
+TP: 166, TN: 62, FP: 109, FN: 38
+Precision: 60.36%
+Recall: 81.37%
+Accuracy: 60.80%
+
+Learning rate = 1.0, initial bias = 1.0, iteration limit = 2,000
+TP: 177, TN: 26, FP: 145, FN: 27
+Precision: 54.97%
+Recall: 86.76%
+Accuracy: 54.13%</pre>
+      </details>
+
+      <details>
+        <summary>Persistence baseline</summary>
+        <pre>TP: 122, TN: 96, FP: 75, FN: 82
+Precision: 61.93%
+Recall: 59.80%
+Accuracy: 58.13%</pre>
+      </details>
+    </section>
+
+    <footer>
+      <a href="https://github.com/amgrapefruit/cmsc170-project-Kevin-Quiambao">Project repository</a>
+    </footer>
+  </main>
+</body>
+</html>
