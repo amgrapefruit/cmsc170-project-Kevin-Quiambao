@@ -1,5 +1,6 @@
 from perceptron import classificationCalc, perceptron
 from preprocess import preprocess
+from evaluation import count_metrics, print_metrics
 
 
 train, test, raw = preprocess("data/psa_cpi.csv")
@@ -50,6 +51,10 @@ accuracy = (tp + tn) / len(y_test)
 
 print(f"Learning rate: {learningRate}, iteration limit: {maxIterations}")
 print(f"TP: {tp}, TN: {tn}, FP: {fp}, FN: {fn}")
-print(f"Precision: {precision:.2%}")
-print(f"Recall: {recall:.2%}")
 print(f"Accuracy: {accuracy:.2%}")
+print(f"Recall: {recall:.2%}")
+print(f"Precision: {precision:.2%}")
+
+a, predictions = [classificationCalc([1.0]+x, weights, threshold) for x in X_test]
+tp, tn, fp, fn = count_metrics(predictions, y_test)
+print_metrics(tp, tn, fp, fn, predictions, y_test)
