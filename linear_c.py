@@ -34,7 +34,7 @@ def perceptron(*params, l_rate=None, bias=None, f_vectors=None, features=None, d
     # initialize weights
     weights = [Decimal(str(bias))]+[Decimal(0)]*(n_feat-1)
 
-    MAX_ITERATIONS = 2000
+    MAX_ITERATIONS = 750
 
     # learning loop
     for iteration in range(MAX_ITERATIONS):
@@ -127,7 +127,7 @@ def recall(predicted, actual):
 train, test, raw_test = preprocess("data/psa_cpi.csv")
 X_train, y_train = train
 
-l_rate = 1.0
+l_rate = 1.3
 bias = 1.0
 weights, iterations = perceptron(l_rate=l_rate, bias=bias, f_vectors=X_train, features=FEATURES, d_labels=y_train)
 
