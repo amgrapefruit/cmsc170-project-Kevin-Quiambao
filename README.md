@@ -55,4 +55,5 @@ Returns 3 values: scaled train and test, plus the unscaled test set for the base
 - Training covers COVID and the 2022–23 spike; the test period is calmer.
 - A 0.01-point move gets the same label as a 1-point move.
 
+### Disclosure of AI Use
 OpenAI Codex assisted with website implementation, and figure preparation(matplotlib). Model outputs and evaluation metrics are computed using the project code.
