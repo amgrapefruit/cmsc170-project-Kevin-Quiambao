@@ -1,6 +1,34 @@
 # cmsc170-project-Kevin-Quiambao
 Project Repository of Group Kevin Quiambao (Section W-5L) for CMSC170 Project
 
+Predicting increases or decreases in regional year-on-year inflation using k-nearest neighbors, Gaussian Naive Bayes, and perceptron, implemented from scratch.
+
+## Run the project
+
+Install Matplotlib and run these commands in order from the repository folder:
+
+```bash
+python3 -m pip install matplotlib
+python3 run_knn.py
+python3 run_perceptron.py
+python3 run_naivebayes.py
+```
+
+The runnables save results in `results/` and plot images in `docs/assets/images/`. Naive Bayes generates the combined charts after the other two runnables finish. Open `docs/index.html` in a browser to view the page.
+
+## Results
+
+Training uses 1,237 samples from April 2019–December 2024; testing uses 375 samples from January 2025–September 2026. An increase is the positive class.
+
+| Model | Test accuracy | Precision | Recall |
+|---|---|---|---|
+| k-NN (k = 21) | 72.80% | 75.00% | 75.00% |
+| Gaussian Naive Bayes | 65.87% | 64.84% | 81.37% |
+| Perceptron | 67.20% | 65.88% | 82.35% |
+| Persistence baseline | 58.13% | 61.93% | 59.80% |
+
+The displayed perceptron uses learning rate 1.0, initial bias 1.0, and 1,000 passes. Settings were selected after comparing test results, so the comparison is exploratory.
+
 ## Preprocessing
 
 ### Data
