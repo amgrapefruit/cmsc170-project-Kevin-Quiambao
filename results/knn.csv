@@ -1,0 +1,2 @@
+model,train_correct,train_total,tp,tn,fp,fn
+k-NN k = 21,991,1237,153,120,51,51
