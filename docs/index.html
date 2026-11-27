@@ -1,160 +1,637 @@
 <!doctype html>
 <html lang="en">
-<head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Milestone 3 | Regional Inflation Direction</title>
-  <link rel="stylesheet" href="styles.css">
-</head>
-<body>
-  <main>
-    <header>
-      <h1>cmsc170-project-Kevin-Quiambao</h1>
-      <p>We compare three from-scratch classifiers that predict whether a Philippine region’s year-on-year inflation rate will rise or fall the following month.</p>
-      <p>All three use the same nine features from PSA All Items CPI data for 18 regions. We trained on 1,237 samples from April 2019 to December 2024 and tested on 375 samples from January 2025 to September 2026.</p>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta
+      name="description"
+      content="Three from-scratch classifiers, one regional inflation task. Explore training and test accuracy, model comparisons, and reproducible results."
+    />
+    <meta name="theme-color" content="#176c5b" />
+    <meta
+      property="og:title"
+      content="Regional inflation direction | CMSC 170"
+    />
+    <meta
+      property="og:description"
+      content="Comparing k-NN, Gaussian Naive Bayes, and perceptron on Philippine regional inflation."
+    />
+    <meta property="og:type" content="website" />
+    <title>Regional inflation direction | CMSC 170</title>
+    <link
+      rel="preload"
+      href="assets/fonts/inter-tight-latin-wght-normal.woff2"
+      as="font"
+      type="font/woff2"
+      crossorigin
+    />
+    <link rel="stylesheet" href="styles.css" />
+    <script src="site.js" defer></script>
+  </head>
+  <body>
+    <a class="skip-link" href="#main">Skip to content</a>
+    <header class="site-header">
+      <div class="wrap header-inner">
+        <a class="wordmark" href="#main"
+          >Kevin Quiambao <span>/ CMSC 170</span></a
+        >
+        <nav aria-label="Main navigation">
+          <a href="#results">Results</a><a href="#dataset">Dataset</a
+          ><a href="#methods">Methods</a><a href="#reproduce">Code and data</a>
+        </nav>
+        <a
+          class="repo-link"
+          href="https://github.com/amgrapefruit/cmsc170-project-Kevin-Quiambao"
+          >Repository</a
+        >
+      </div>
     </header>
-
-    <section aria-labelledby="results">
-      <h2 id="results">Test results</h2>
-      <p>Accuracy measures the share of correct predictions. Precision and recall use a rise in inflation as the positive class.</p>
-
-      <table>
-        <thead>
-          <tr>
-            <th scope="col">Method</th>
-            <th scope="col">Accuracy</th>
-            <th scope="col">Precision</th>
-            <th scope="col">Recall</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <th scope="row">KNN (<i>k</i> = 5)</th>
-            <td>69.07%</td>
-            <td>73.16%</td>
-            <td>68.14%</td>
-          </tr>
-          <tr>
-            <th scope="row">Gaussian Naive Bayes</th>
-            <td>59.20%</td>
-            <td>63.35%</td>
-            <td>59.31%</td>
-          </tr>
-          <tr>
-            <th scope="row">Linear classifier (perceptron)</th>
-            <td>67.47%</td>
-            <td>66.02%</td>
-            <td>82.84%</td>
-          </tr>
-          <tr class="baseline">
-            <th scope="row"><a href="https://www.sciencedirect.com/topics/engineering/persistence-model">Persistence baseline</a></th>
-            <td>58.13%</td>
-            <td>61.93%</td>
-            <td>59.80%</td>
-          </tr>
-        </tbody>
-      </table>
-
-      <figure>
-        <figcaption>Test accuracy</figcaption>
-        <div class="chart" aria-hidden="true">
-          <div class="chart-row"><span>KNN</span><meter min="0" max="100" value="69.07"></meter><span>69.07%</span></div>
-          <div class="chart-row"><span>Naive Bayes</span><meter min="0" max="100" value="59.20"></meter><span>59.20%</span></div>
-          <div class="chart-row"><span>Perceptron</span><meter min="0" max="100" value="67.47"></meter><span>67.47%</span></div>
-          <div class="chart-row baseline"><span>Baseline</span><meter min="0" max="100" value="58.13"></meter><span>58.13%</span></div>
-          <div class="chart-row"><span></span><div class="scale"><span>0%</span><span>50%</span><span>100%</span></div></div>
+    <main id="main" class="wrap">
+      <section class="hero" aria-labelledby="project-title">
+        <div class="hero-copy">
+          <p class="study-label">A study of Philippine inflation</p>
+          <h1 id="project-title">Which way will inflation move?</h1>
+          <p class="lead">
+            Predicting next month’s rise or fall in regional inflation with
+            three classifiers built from scratch.
+          </p>
+          <p>
+            We compare k-nearest neighbors, Gaussian Naive Bayes, and a
+            perceptron using past price movements across 18 Philippine regions.
+          </p>
+          <a class="button" href="#results">Explore the results</a>
+          <p class="hero-byline">
+            Joshua Otero · Anthony Rojo<br />Aaron Michael Ariedo · Alan Nikkos
+            Madid
+          </p>
         </div>
-      </figure>
+        <figure class="hero-chart">
+          <div class="figure-top">
+            <h2>National inflation</h2>
+            <span>2019–2026</span>
+          </div>
+          <div class="chart-scroll">
+            <img
+              id="history-chart"
+              src="assets/images/inflation-national.png"
+              width="1209"
+              height="595"
+              alt="Philippines year-on-year inflation, January 2019 to September 2026; the test period begins in January 2025."
+            />
+          </div>
+          <figcaption id="history-note">
+            National CPI-derived observations provide context for the regional
+            prediction task. Shading marks January 2025–September 2026, the
+            held-out test period.
+          </figcaption>
+        </figure>
+      </section>
+      <div class="study-facts" aria-label="Study scope">
+        <div><strong>18</strong><span>Regions</span></div>
+        <div><strong>9</strong><span>Features per sample</span></div>
+        <div><strong>1,237</strong><span>Training samples</span></div>
+        <div><strong>375</strong><span>Held-out test samples</span></div>
+      </div>
 
-      <p>Among the runs shown, KNN had the highest accuracy and the perceptron had the highest recall.</p>
-      <p class="note">The perceptron uses the Milestone 2 run with a learning rate of 0.1, an initial bias of 0, and a limit of 1,000 passes. Note, however, that the perceptron function did not converge, and may indicate that the training data is not linearly-separable.</p>
-    </section>
+      <section id="results" class="section" aria-labelledby="results-title">
+        <div class="section-heading">
+          <h2 id="results-title">Three methods. One test.</h2>
+          <p>
+            We compare k-NN (k = 11), Gaussian Naive Bayes, and perceptron.
+            Every method predicts the same 375 test samples; a rise in inflation
+            is the positive class.
+          </p>
+        </div>
+        <div class="results-grid">
+          <div class="finding">
+            <h3>Results interpretation</h3>
+            <!-- Add the group's interpretation here. -->
+            <p class="placeholder-text">
+              [interpretation]
+            </p>
+          </div>
+          <figure class="chart-panel">
+            <div class="figure-top">
+              <h3 id="comparison-title">Test accuracy</h3>
+              <div
+                class="metric-controls enhanced-control"
+                role="group"
+                aria-label="Comparison metric"
+              >
+                <button
+                  type="button"
+                  data-metric="accuracy"
+                  data-alt="k-NN · k = 11: 72.00%; Naive Bayes: 65.87%; Perceptron: 67.20%. Persistence baseline: 58.13%."
+                  aria-pressed="true"
+                >
+                  Accuracy</button
+                ><button
+                  type="button"
+                  data-metric="precision"
+                  data-alt="k-NN · k = 11: 75.92%; Naive Bayes: 64.84%; Perceptron: 65.88%. Persistence baseline: 61.93%."
+                  aria-pressed="false"
+                >
+                  Precision</button
+                ><button
+                  type="button"
+                  data-metric="recall"
+                  data-alt="k-NN · k = 11: 71.08%; Naive Bayes: 81.37%; Perceptron: 82.35%. Persistence baseline: 59.80%."
+                  aria-pressed="false"
+                >
+                  Recall
+                </button>
+              </div>
+            </div>
+            <div
+              class="chart-scroll"
+              tabindex="0"
+              role="region"
+              aria-label="Scrollable chart"
+            >
+              <img
+                id="comparison-chart"
+                src="assets/images/comparison-accuracy.png"
+                width="1322"
+                height="656"
+                alt="Test accuracy: k-NN k11 72.00%, Naive Bayes 65.87%, perceptron 67.20%."
+                loading="lazy"
+              />
+            </div>
+            <figcaption id="metric-description" aria-live="polite">
+              Accuracy is the share of all predictions that are correct. The
+              dashed line marks the persistence baseline.
+            </figcaption>
+          </figure>
+        </div>
+        <div
+          class="table-scroll"
+          tabindex="0"
+          role="region"
+          aria-label="Scrollable data table"
+        >
+          <table class="results-table">
+            <caption>
+              Test performance · increase is the positive class
+            </caption>
+            <thead>
+              <tr>
+                <th scope="col">Configuration</th>
+                <th scope="col">Accuracy</th>
+                <th scope="col">Precision</th>
+                <th scope="col">Recall</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <th scope="row">k-NN · k = 11</th>
+                <td>72.00%</td>
+                <td>75.92%</td>
+                <td>71.08%</td>
+              </tr>
+              <tr>
+                <th scope="row">Naive Bayes</th>
+                <td>65.87%</td>
+                <td>64.84%</td>
+                <td>81.37%</td>
+              </tr>
+              <tr>
+                <th scope="row">Perceptron</th>
+                <td>67.20%</td>
+                <td>65.88%</td>
+                <td>82.35%</td>
+              </tr>
+              <tr class="baseline-row">
+                <th scope="row">Persistence baseline</th>
+                <td>58.13%</td>
+                <td>61.93%</td>
+                <td>59.80%</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <p class="small">
+          The settings were chosen after comparing these test results. Treat the
+          comparison as exploratory.
+        </p>
+      </section>
 
-    <section aria-labelledby="detailed-outputs">
-      <h2 id="detailed-outputs">Detailed outputs</h2>
-      <p>TP and TN are true positives and true negatives. FP and FN are false positives and false negatives.</p>
+      <section
+        id="generalization"
+        class="section"
+        aria-labelledby="generalization-title"
+      >
+        <div class="section-heading">
+          <h2 id="generalization-title">Learning versus generalizing</h2>
+          <p>
+            Each pair uses one fitted configuration: first evaluated on its
+            training samples, then on the later test period.
+          </p>
+        </div>
+        <div class="analysis-grid">
+          <figure class="chart-panel">
+            <h3>Training and test accuracy</h3>
+            <div
+              class="chart-scroll"
+              tabindex="0"
+              role="region"
+              aria-label="Scrollable chart"
+            >
+              <img
+                src="assets/images/train-test.png"
+                width="1322"
+                height="718"
+                alt="Training/test accuracy: k11 82.05%/72.00%; Naive Bayes 74.54%/65.87%; perceptron 70.01%/67.20%."
+                loading="lazy"
+              />
+            </div>
+            <figcaption>
+              Accuracy on 1,237 training samples and 375 test samples. The k-NN
+              training score includes each sample as its own neighbor.
+            </figcaption>
+          </figure>
+          <div class="analysis-note">
+            <h3>Training and test interpretation</h3>
+            <!-- Add the group's interpretation here. -->
+            <p class="placeholder-text">
+              [interpretation]
+            </p>
+          </div>
+        </div>
+        <div
+          class="table-scroll"
+          tabindex="0"
+          role="region"
+          aria-label="Scrollable data table"
+        >
+          <table>
+            <caption>
+              Training minus test · percentage points
+            </caption>
+            <thead>
+              <tr>
+                <th scope="col">Configuration</th>
+                <th scope="col">Training</th>
+                <th scope="col">Test</th>
+                <th scope="col">Gap</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <th scope="row">k-NN · k = 11</th>
+                <td>82.05%</td>
+                <td>72.00%</td>
+                <td>+10.05 pp</td>
+              </tr>
+              <tr>
+                <th scope="row">Naive Bayes</th>
+                <td>74.54%</td>
+                <td>65.87%</td>
+                <td>+8.67 pp</td>
+              </tr>
+              <tr>
+                <th scope="row">Perceptron</th>
+                <td>70.01%</td>
+                <td>67.20%</td>
+                <td>+2.81 pp</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
 
-      <details>
-        <summary>KNN</summary>
-        <pre>k = 3
-TP: 142, TN: 122, FP: 49, FN: 62
-Precision: 74.35%
-Recall: 69.61%
-Accuracy: 70.40%
+      <section id="dataset" class="section" aria-labelledby="dataset-title">
+        <div class="section-heading">
+          <h2 id="dataset-title">From prices to a prediction task</h2>
+          <p>
+            PSA All Items Consumer Price Index data, base year 2018 = 100. We
+            model direction, rather than the size of the next inflation change.
+          </p>
+        </div>
+        <div class="dataset-grid">
+          <div>
+            <h3>The target</h3>
+            <p>
+              Calculate year-on-year inflation for each region and month. Label
+              the sample “increase” if that rate exceeds the previous month’s
+              rate, or “decrease” if it is lower.
+            </p>
+            <div class="formula">
+              Inflation(t) = 100 × (CPI(t) / CPI(t − 12) − 1)
+            </div>
+            <p>
+              Exact ties and rows with missing required observations are
+              excluded. The national total and “Areas Outside NCR” aggregate are
+              not regional training examples.
+            </p>
+          </div>
+          <div>
+            <h3>Why this problem?</h3>
+            <p>
+              A change in the inflation rate describes whether price pressure is
+              accelerating or easing. Comparing learning methods on this task
+              helps us study what past price movements can, and cannot, tell us
+              about the next month.
+            </p>
+            <p>
+              Source: PSA OpenStat table <strong>2M4ACP22</strong>, downloaded
+              November 13, 2026. The source file covers January 2018–October
+              2026, this experiment stops at September 2026.
+            </p>
+          </div>
+        </div>
+        <h3 class="subheading">A chronological split</h3>
+        <div class="split-timeline">
+          <div class="training-period">
+            <strong>Training · 1,237 samples</strong
+            ><span>April 2019–December 2024</span
+            ><small>600 rises · 637 falls</small>
+          </div>
+          <div class="test-period">
+            <strong>Test · 375 samples</strong
+            ><span>January 2025–September 2026</span
+            ><small>204 rises · 171 falls</small>
+          </div>
+        </div>
+        <p class="small">
+          Scaling uses only training means and population standard deviations.
+          The same values transform the test set. No feature uses observations
+          from its own target month.
+        </p>
+        <details class="large-disclosure">
+          <summary>Inspect the nine input features</summary>
+          <div class="table-scroll">
+            <table class="feature-table">
+              <caption>
+                Information available before the target month
+              </caption>
+              <thead>
+                <tr>
+                  <th scope="col">Feature</th>
+                  <th scope="col">Definition</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <th scope="row">rate_t3, rate_t2, rate_t1</th>
+                  <td>
+                    Year-on-year inflation three, two, and one month before the
+                    target
+                  </td>
+                </tr>
+                <tr>
+                  <th scope="row">trend_1</th>
+                  <td>rate_t1 − rate_t2</td>
+                </tr>
+                <tr>
+                  <th scope="row">trend_2</th>
+                  <td>rate_t2 − rate_t3</td>
+                </tr>
+                <tr>
+                  <th scope="row">base</th>
+                  <td>
+                    Month-on-month price change for the target month one year
+                    earlier
+                  </td>
+                </tr>
+                <tr>
+                  <th scope="row">recent</th>
+                  <td>
+                    Average month-on-month price change over the previous three
+                    months
+                  </td>
+                </tr>
+                <tr>
+                  <th scope="row">gap</th>
+                  <td>recent − base</td>
+                </tr>
+                <tr>
+                  <th scope="row">national</th>
+                  <td>
+                    National month-on-month price change one month before the
+                    target
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <p>
+            The base effect follows a CPI identity: year-on-year inflation rises
+            when this month’s price growth exceeds growth in the same month a
+            year earlier. The earlier growth is known; this month’s growth must
+            be estimated.
+          </p>
+        </details>
+      </section>
 
-k = 5
-TP: 139, TN: 120, FP: 51, FN: 65
-Precision: 73.16%
-Recall: 68.14%
-Accuracy: 69.07%
+      <section id="methods" class="section" aria-labelledby="methods-title">
+        <div class="section-heading">
+          <h2 id="methods-title">Three ways to learn the direction</h2>
+          <p>
+            All three methods share the same nine scaled features and
+            chronological split. Each method solves the same prediction task.
+          </p>
+        </div>
+        <div class="method-list">
+          <article>
+            <h3>k-nearest neighbors</h3>
+            <div>
+              <p>
+                Find the closest training examples by Euclidean distance and
+                predict their majority direction. It can reflect local patterns
+                without fitting one global boundary.
+              </p>
+              <dl>
+                <div>
+                  <dt>Displayed setting</dt>
+                  <dd>k = 11 · Euclidean distance (p = 2)</dd>
+                </div>
+                <div>
+                  <dt>Implementation</dt>
+                  <dd>
+                    <a
+                      href="https://github.com/amgrapefruit/cmsc170-project-Kevin-Quiambao/blob/main/knn.py"
+                      >knn.py</a
+                    >
+                  </dd>
+                </div>
+              </dl>
+            </div>
+          </article>
+          <article>
+            <h3>Gaussian Naive Bayes</h3>
+            <div>
+              <p>
+                Estimate a mean and population variance for each feature within
+                each class. Add the Gaussian log-likelihoods to the class
+                log-prior and choose the larger score. This assumes conditional
+                independence between features given the class.
+              </p>
+              <dl>
+                <div>
+                  <dt>Displayed setting</dt>
+                  <dd>
+                    Empirical priors · class-specific population variances
+                  </dd>
+                </div>
+                <div>
+                  <dt>Implementation</dt>
+                  <dd>
+                    <a
+                      href="https://github.com/amgrapefruit/cmsc170-project-Kevin-Quiambao/blob/main/gn_bayes.py"
+                      >gn_bayes.py</a
+                    >
+                  </dd>
+                </div>
+              </dl>
+            </div>
+          </article>
+          <article>
+            <h3>Perceptron</h3>
+            <div>
+              <p>
+                Predict using a weighted sum of features, updating weights
+                whenever a training sample is misclassified. A linear decision
+                boundary separates predicted rises from falls.
+              </p>
+              <dl>
+                <div>
+                  <dt>Displayed setting</dt>
+                  <dd>Learning rate 1.0 · initial bias 1.0 · 1,000 passes</dd>
+                </div>
+                <div>
+                  <dt>Implementation</dt>
+                  <dd>
+                    <a
+                      href="https://github.com/amgrapefruit/cmsc170-project-Kevin-Quiambao/blob/main/perceptron.py"
+                      >perceptron.py</a
+                    >
+                  </dd>
+                </div>
+              </dl>
+              <p class="small">
+                The run reaches the pass limit without convergence and uses the
+                last adjusted weights. It is evaluated using the same settings
+                for both training and test accuracy.
+              </p>
+            </div>
+          </article>
+        </div>
+      </section>
 
-k = 7
-TP: 140, TN: 125, FP: 46, FN: 64
-Precision: 75.27%
-Recall: 68.63%
-Accuracy: 70.67%
+      <section
+        id="discussion"
+        class="section"
+        aria-labelledby="discussion-title"
+      >
+        <div class="section-heading">
+          <h2 id="discussion-title">Discussion</h2>
+          <p class="placeholder-text">
+              [insert discussion]
+            </p>
+        </div>
+        <div class="discussion-grid">
+          <article>
+            <h3>Interpretation</h3>
+            <!-- Add the group's analysis here. -->
+            <p class="placeholder-text">
+              [interpretation]
+            </p>
+          </article>
+          <article>
+            <h3>Limitations and improvements</h3>
+            <!-- Add the group's limitations and possible improvements here. -->
+            <p class="placeholder-text">
+              [insert limitations and improvements]
+            </p>
+          </article>
+        </div>
+        <div class="conclusion">
+          <h3>Conclusion</h3>
+          <!-- Add the group's final conclusion here. -->
+          <p class="placeholder-text">
+              [insert final conclusion]
+            </p>
+        </div>
+      </section>
 
-k = 9
-TP: 144, TN: 123, FP: 48, FN: 60
-Precision: 75.00%
-Recall: 70.59%
-Accuracy: 71.20%</pre>
-      </details>
-
-      <details>
-        <summary>Gaussian Naive Bayes</summary>
-        <pre>TP: 121, TN: 101, FP: 70, FN: 83
-Precision: 63.35%
-Recall: 59.31%
-Accuracy: 59.20%</pre>
-      </details>
-
-      <details>
-        <summary>Linear classifier (perceptron)</summary>
-        <p>All five runs reached their iteration limit and used the last adjusted weights.</p>
-        <pre>Learning rate = 0.1, initial bias = 0, iteration limit = 1,000
-TP: 169, TN: 84, FP: 87, FN: 35
-Precision: 66.02%
-Recall: 82.84%
-Accuracy: 67.47%
-
-Learning rate = 1.0, initial bias = 1.0, iteration limit = 1,000
-TP: 168, TN: 84, FP: 87, FN: 36
-Precision: 65.88%
-Recall: 82.35%
-Accuracy: 67.20%
-
-Learning rate = 0.1, initial bias = 0, iteration limit = 100
-TP: 165, TN: 45, FP: 126, FN: 39
-Precision: 56.70%
-Recall: 80.88%
-Accuracy: 56.00%
-
-Learning rate = 0.1, initial bias = 0, iteration limit = 2,000
-TP: 166, TN: 62, FP: 109, FN: 38
-Precision: 60.36%
-Recall: 81.37%
-Accuracy: 60.80%
-
-Learning rate = 1.0, initial bias = 1.0, iteration limit = 2,000
-TP: 177, TN: 26, FP: 145, FN: 27
-Precision: 54.97%
-Recall: 86.76%
-Accuracy: 54.13%</pre>
-      </details>
-
-      <details>
-        <summary>Persistence baseline</summary>
-        <pre>TP: 122, TN: 96, FP: 75, FN: 82
-Precision: 61.93%
-Recall: 59.80%
-Accuracy: 58.13%</pre>
-      </details>
-    </section>
-
-    <footer>
-      <a href="https://github.com/amgrapefruit/cmsc170-project-Kevin-Quiambao">Project repository</a>
+      <section id="reproduce" class="section" aria-labelledby="reproduce-title">
+        <div class="section-heading">
+          <h2 id="reproduce-title">Code and data</h2>
+          <p>
+            The repository contains the CPI data, preprocessing, model
+            implementations, and evaluation code.
+          </p>
+        </div>
+        <div class="dataset-grid">
+          <div>
+            <h3>Run the experiments</h3>
+            <p>From the project directory:</p>
+            <pre><code>python3 run_knn.py
+python3 run_perceptron.py
+python3 run_naivebayes.py</code></pre>
+            <p class="small">
+              Run the commands in this order to refresh the figures. The Naive
+              Bayes runnable creates the combined charts using the saved results
+              from k-NN and perceptron.
+            </p>
+            <p>
+              <a
+                href="https://github.com/amgrapefruit/cmsc170-project-Kevin-Quiambao"
+                >View the project repository</a
+              >
+            </p>
+            <p>
+              Matplotlib code is included directly in
+              <a
+                href="https://github.com/amgrapefruit/cmsc170-project-Kevin-Quiambao/blob/main/run_knn.py"
+                >run_knn.py</a
+              >,
+              <a
+                href="https://github.com/amgrapefruit/cmsc170-project-Kevin-Quiambao/blob/main/run_perceptron.py"
+                >run_perceptron.py</a
+              >, and
+              <a
+                href="https://github.com/amgrapefruit/cmsc170-project-Kevin-Quiambao/blob/main/run_naivebayes.py"
+                >run_naivebayes.py</a
+              >.
+            </p>
+            <p class="small">Presentation slides are not yet linked.</p>
+          </div>
+          <div>
+            <h3>References and AI use</h3>
+            <ul class="references">
+              <li>
+                <a href="https://openstat.psa.gov.ph/"
+                  >Philippine Statistics Authority OpenStat</a
+                >
+                · table 2M4ACP22, All Items CPI, 2018 = 100
+              </li>
+              <li>
+                <a
+                  href="https://github.com/amgrapefruit/cmsc170-project-Kevin-Quiambao/blob/main/data/psa_cpi.csv"
+                  >CPI dataset</a
+                >
+                and
+                <a
+                  href="https://github.com/amgrapefruit/cmsc170-project-Kevin-Quiambao/blob/main/preprocess.py"
+                  >preprocessing</a
+                >
+              </li>
+            </ul>
+            <p class="small">
+              OpenAI Codex assisted with website implementation, and figure
+              preparation. Model outputs and evaluation metrics are computed
+              using the project code.
+            </p>
+          </div>
+        </div>
+      </section>
+    </main>
+    <footer class="site-footer">
+      <div class="wrap">
+        <p>Group Kevin Quiambao · CMSC 170 · W-5L</p>
+        <a href="#main">Back to the study</a>
+      </div>
     </footer>
-  </main>
-</body>
+  </body>
 </html>

@@ -54,3 +54,5 @@ Returns 3 values: scaled train and test, plus the unscaled test set for the base
 - Regions move together, so the 375 test samples are closer to ~21 months of evidence. Small gaps between models may be noise.
 - Training covers COVID and the 2022–23 spike; the test period is calmer.
 - A 0.01-point move gets the same label as a 1-point move.
+
+OpenAI Codex assisted with website implementation, and figure preparation(matplotlib). Model outputs and evaluation metrics are computed using the project code.

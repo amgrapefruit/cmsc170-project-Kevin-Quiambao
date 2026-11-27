@@ -1,0 +1,2 @@
+model,train_correct,train_total,tp,tn,fp,fn
+Perceptron,866,1237,168,84,87,36

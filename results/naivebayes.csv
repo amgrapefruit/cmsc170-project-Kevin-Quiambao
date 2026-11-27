@@ -1,0 +1,2 @@
+model,train_correct,train_total,tp,tn,fp,fn
+Naive Bayes,922,1237,166,81,90,38
