@@ -450,8 +450,11 @@ tbody tr:hover {
 .baseline-row {
   color: var(--muted);
 }
-.results-table tbody tr:first-child {
-  background: var(--pale);
+.results-table .best-value {
+  text-decoration: underline;
+  text-decoration-color: var(--green);
+  text-decoration-thickness: 2px;
+  text-underline-offset: 5px;
 }
 .table-scroll + p {
   margin-top: 16px;
@@ -1039,7 +1042,7 @@ code {
   }
 }
 
-.placeholder-text {
+.report-text {
   color: var(--muted);
   border-left: 2px solid var(--line);
   padding-left: 16px;

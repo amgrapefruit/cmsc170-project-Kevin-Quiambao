@@ -1,2 +1,2 @@
 model,train_correct,train_total,tp,tn,fp,fn
-k-NN k = 11,1015,1237,145,125,46,59
+k-NN k = 21,991,1237,153,120,51,51

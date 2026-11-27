@@ -32,12 +32,12 @@ os.makedirs("results", exist_ok=True)
 
 # Save the training and test results for the combined comparison graphs.
 comparison_results = []
-training_predictions = predict(X_train, y_train, X_train, k=11)
+training_predictions = predict(X_train, y_train, X_train, k=21)
 train_tp, train_tn, train_fp, train_fn = count_metrics(training_predictions, y_train)
 for row in knn_results:
-    if row[0] == 11:
+    if row[0] == 21:
         comparison_results.append([
-            "k-NN k = 11", train_tp + train_tn, len(y_train),
+            "k-NN k = 21", train_tp + train_tn, len(y_train),
             row[1], row[2], row[3], row[4]
         ])
 

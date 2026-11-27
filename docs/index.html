@@ -97,7 +97,7 @@
         <div class="section-heading">
           <h2 id="results-title">Three methods. One test.</h2>
           <p>
-            We compare k-NN (k = 11), Gaussian Naive Bayes, and perceptron.
+            We compare k-NN (k = 21), Gaussian Naive Bayes, and perceptron.
             Every method predicts the same 375 test samples; a rise in inflation
             is the positive class.
           </p>
@@ -105,9 +105,11 @@
         <div class="results-grid">
           <div class="finding">
             <h3>Results interpretation</h3>
-            <!-- Add the group's interpretation here. -->
-            <p class="placeholder-text">
-              [interpretation]
+            <p class="report-text">
+              All three methods beat the 58.13% persistence baseline. k-NN (k =
+              21) was the most accurate at 72.80%, with precision and recall
+              both at 75.00%. The perceptron and Naive Bayes caught more
+              increases, but also produced more false alarms.
             </p>
           </div>
           <figure class="chart-panel">
@@ -121,21 +123,21 @@
                 <button
                   type="button"
                   data-metric="accuracy"
-                  data-alt="k-NN · k = 11: 72.00%; Naive Bayes: 65.87%; Perceptron: 67.20%. Persistence baseline: 58.13%."
+                  data-alt="k-NN · k = 21: 72.80%; Naive Bayes: 65.87%; Perceptron: 67.20%. Persistence baseline: 58.13%."
                   aria-pressed="true"
                 >
                   Accuracy</button
                 ><button
                   type="button"
                   data-metric="precision"
-                  data-alt="k-NN · k = 11: 75.92%; Naive Bayes: 64.84%; Perceptron: 65.88%. Persistence baseline: 61.93%."
+                  data-alt="k-NN · k = 21: 75.00%; Naive Bayes: 64.84%; Perceptron: 65.88%. Persistence baseline: 61.93%."
                   aria-pressed="false"
                 >
                   Precision</button
                 ><button
                   type="button"
                   data-metric="recall"
-                  data-alt="k-NN · k = 11: 71.08%; Naive Bayes: 81.37%; Perceptron: 82.35%. Persistence baseline: 59.80%."
+                  data-alt="k-NN · k = 21: 75.00%; Naive Bayes: 81.37%; Perceptron: 82.35%. Persistence baseline: 59.80%."
                   aria-pressed="false"
                 >
                   Recall
@@ -153,7 +155,7 @@
                 src="assets/images/comparison-accuracy.png"
                 width="1322"
                 height="656"
-                alt="Test accuracy: k-NN k11 72.00%, Naive Bayes 65.87%, perceptron 67.20%."
+                alt="Test accuracy: k-NN k21 72.80%, Naive Bayes 65.87%, perceptron 67.20%."
                 loading="lazy"
               />
             </div>
@@ -171,7 +173,8 @@
         >
           <table class="results-table">
             <caption>
-              Test performance · increase is the positive class
+              Test performance · increase is the positive class. Underlined
+              values are the highest in each column.
             </caption>
             <thead>
               <tr>
@@ -183,10 +186,10 @@
             </thead>
             <tbody>
               <tr>
-                <th scope="row">k-NN · k = 11</th>
-                <td>72.00%</td>
-                <td>75.92%</td>
-                <td>71.08%</td>
+                <th scope="row">k-NN · k = 21</th>
+                <td class="best-value">72.80%</td>
+                <td class="best-value">75.00%</td>
+                <td>75.00%</td>
               </tr>
               <tr>
                 <th scope="row">Naive Bayes</th>
@@ -198,7 +201,7 @@
                 <th scope="row">Perceptron</th>
                 <td>67.20%</td>
                 <td>65.88%</td>
-                <td>82.35%</td>
+                <td class="best-value">82.35%</td>
               </tr>
               <tr class="baseline-row">
                 <th scope="row">Persistence baseline</th>
@@ -240,7 +243,7 @@
                 src="assets/images/train-test.png"
                 width="1322"
                 height="718"
-                alt="Training/test accuracy: k11 82.05%/72.00%; Naive Bayes 74.54%/65.87%; perceptron 70.01%/67.20%."
+                alt="Training/test accuracy: k21 80.11%/72.80%; Naive Bayes 74.54%/65.87%; perceptron 70.01%/67.20%."
                 loading="lazy"
               />
             </div>
@@ -251,9 +254,12 @@
           </figure>
           <div class="analysis-note">
             <h3>Training and test interpretation</h3>
-            <!-- Add the group's interpretation here. -->
-            <p class="placeholder-text">
-              [interpretation]
+            <p class="report-text">
+              Every model scored lower on the later test months than on its
+              training data. Naive Bayes had the largest drop at 8.67 percentage
+              points, followed by k-NN at 7.31 and the perceptron at 2.81. k-NN
+              remained the most accurate on both sets. Its training score
+              includes each example as its own neighbor.
             </p>
           </div>
         </div>
@@ -277,10 +283,10 @@
             </thead>
             <tbody>
               <tr>
-                <th scope="row">k-NN · k = 11</th>
-                <td>82.05%</td>
-                <td>72.00%</td>
-                <td>+10.05 pp</td>
+                <th scope="row">k-NN · k = 21</th>
+                <td>80.11%</td>
+                <td>72.80%</td>
+                <td>+7.31 pp</td>
               </tr>
               <tr>
                 <th scope="row">Naive Bayes</th>
@@ -443,7 +449,7 @@
               <dl>
                 <div>
                   <dt>Displayed setting</dt>
-                  <dd>k = 11 · Euclidean distance (p = 2)</dd>
+                  <dd>k = 21 · Euclidean distance (p = 2)</dd>
                 </div>
                 <div>
                   <dt>Implementation</dt>
@@ -525,32 +531,47 @@
       >
         <div class="section-heading">
           <h2 id="discussion-title">Discussion</h2>
-          <p class="placeholder-text">
-              [insert discussion]
-            </p>
+          <p class="report-text">
+            The comparison highlights the value of features based on the same
+            month last year, and the different tradeoffs each model makes
+            between catching increases and avoiding false alarms.
+          </p>
         </div>
         <div class="discussion-grid">
           <article>
             <h3>Interpretation</h3>
-            <!-- Add the group's analysis here. -->
-            <p class="placeholder-text">
-              [interpretation]
+            <p class="report-text">
+              Across k = 3 to 33, k-NN accuracy stayed around 69–73%. We chose k
+              = 21 for its joint-highest accuracy and balanced precision and
+              recall. Perceptron accuracy ranged from about 54% to 67% across 11
+              settings, and more training passes did not consistently help. Its
+              consistently high recall suggests a tendency to predict increases;
+              a single linear boundary may not capture all the patterns in the
+              data.
             </p>
           </article>
           <article>
-            <h3>Limitations and improvements</h3>
-            <!-- Add the group's limitations and possible improvements here. -->
-            <p class="placeholder-text">
-              [insert limitations and improvements]
+            <h3>Limitations</h3>
+            <p class="report-text">
+              Regions move together, so the 375 test samples represent about 21
+              months of evidence. Small differences between models may be noise.
+              Training includes COVID and the 2022–23 price spike, while the
+              test period is calmer. A tiny 0.01-point change also receives the
+              same label as a 1-point change.
             </p>
           </article>
         </div>
         <div class="conclusion">
           <h3>Conclusion</h3>
-          <!-- Add the group's final conclusion here. -->
-          <p class="placeholder-text">
-              [insert final conclusion]
-            </p>
+          <p class="report-text">
+            Past price data helped predict regional inflation direction in this
+            test period: k-NN was correct 72.80% of the time, compared with
+            58.13% for repeating the previous direction. Features built around
+            the comparison with the same month last year gave the models a
+            useful basis for prediction. k-NN was the most accurate and
+            balanced, while the perceptron and Naive Bayes caught more rises at
+            the cost of more false alarms.
+          </p>
         </div>
       </section>
 
